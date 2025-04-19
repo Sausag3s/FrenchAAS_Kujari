@@ -1,4 +1,4 @@
-respawn            = "BASE";
+respawn            = "MENU";
 respawnDelay       = 15;                     // normal single‑player delay
 respawnDialog      = 1;
 respawnOnStart     = 1;
