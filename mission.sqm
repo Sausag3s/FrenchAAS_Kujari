@@ -20,10 +20,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={12038.474,32.356262,15105.281};
-		dir[]={0.63301146,-0.48477858,-0.60356122};
-		up[]={0.35085464,0.87463695,-0.33453149};
-		aside[]={-0.69007063,-1.4901161e-08,-0.72374201};
+		pos[]={12047.245,26.462732,15094.232};
+		dir[]={0.34820813,-0.4437024,-0.82575983};
+		up[]={0.1724004,0.89617419,-0.40883976};
+		aside[]={-0.92142785,0,-0.38854963};
 	};
 };
 binarizationWanted=0;
@@ -112,18 +112,6 @@ class CustomAttributes
 		name="Multiplayer";
 		class Attribute0
 		{
-			property="RespawnTemplates";
-			expression="true";
-			class Value
-			{
-				class data
-				{
-					singleType="ARRAY";
-				};
-			};
-		};
-		class Attribute1
-		{
 			property="ENH_dynamicGroups";
 			expression="                if (!is3DEN && isMultiplayer && _value) then                {                    if (isServer) then {['Initialize'] call BIS_fnc_dynamicGroups};                    if (hasInterface) then                    {                        0 spawn                        {                            scriptName 'ENH_Attribute_DynamicGroups';                            waitUntil {!isNull player};                            ['InitializePlayer', [player]] call BIS_fnc_dynamicGroups;                        };                    };                };            ";
 			class Value
@@ -132,6 +120,18 @@ class CustomAttributes
 				{
 					singleType="BOOL";
 					value=1;
+				};
+			};
+		};
+		class Attribute1
+		{
+			property="RespawnTemplates";
+			expression="true";
+			class Value
+			{
+				class data
+				{
+					singleType="ARRAY";
 				};
 			};
 		};

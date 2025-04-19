@@ -2,7 +2,6 @@ respawn            = "BASE";
 respawnDelay       = 15;                     // normal single‑player delay
 respawnDialog      = 1;
 respawnOnStart     = 1;
-respawnTemplates[] = { "MenuPosition", "MenuInventory" };
 
 class Header
 {
@@ -20,53 +19,222 @@ class CfgACESettings
   class ace_medical_medicSetting      { value = 2; };
 };
 
-/* ---------- Four AMF loadouts ---------- */
+// ───────────────────────────────────────────────────────────────────────────
+// 1) RESPWAN INVENTORY: ALL FRENCH KITS (no roles, all always available)
+// ───────────────────────────────────────────────────────────────────────────
 class CfgRespawnInventory
 {
-  class SL_FRA
-  {
-    displayName = "SquadLead";
-    icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\captain_gs.paa";
+    /* Squad Leader */
+    class SquadLeader
+    {
+        displayName   = "Squad Leader";
+        weapons[]     = { "AMF_HK416F_SF_2", "AMF_Glock17" };
+        magazines[]   =
+        {
+            "AMF_556x45_30Rnd", 8,
+            "17Rnd_9x19_Mag",    2,
+            "HandGrenade",       1,
+            "SmokeShell",        1
+        };
+        items[]       = { "ACE_MapTools", "ACE_Flashlight_XL50", "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "AMF_Backpack_Leader_CE";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
 
-    weapons[]      = { "AMF_HK416F_SF_2", "AMF_Glock17", "Throw", "Put" };
-    magazines[]    = { "AMF_556x45_30Rnd",8,  "17Rnd_9x19_Mag",2, "SmokeShell",2 };
-    linkedItems[]  = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch",
-                       "TFAR_anprc152" };
-    items[]        = { "ACE_MapTools","ACE_Flashlight_XL50" };
-    uniformClass   = "AMF_FELIN_BCE_uniform_CE";
-    backpack       = "";
-  };
+    /* Rifleman */
+    class Rifleman
+    {
+        displayName   = "Rifleman";
+        weapons[]     = { "AMF_FAMAS_F1" };
+        magazines[]   =
+        {
+            "AMF_556x45_25Rnd", 10,
+            "HandGrenade",       1,
+            "SmokeShell",        1
+        };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_AssaultPack_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
 
-  class RIF_FRA
-  {
-    displayName = "Rifleman";
-    weapons[]   = { "AMF_FAMAS_F1", "Throw", "Put" };
-    magazines[] = { "AMF_556x45_25Rnd",10, "SmokeShell" };
-    linkedItems[] = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch" };
-    uniformClass  = "AMF_FELIN_BCE_uniform_CE";
-  };
+    /* Grenadier */
+    class Grenadier
+    {
+        displayName   = "Grenadier";
+        weapons[]     = { "AMF_FAMAS_GL" };      // F1 with GL
+        magazines[]   =
+        {
+            "AMF_556x45_25Rnd",     6,
+            "1Rnd_HE_Grenade_shell", 6,
+            "HandGrenade",           1,
+            "SmokeShell",            1
+        };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_AssaultPack_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
 
-  class AR_FRA
-  {
-    displayName  = "AutoRifleman";
-    weapons[]    = { "AMF_MINIMI_556","Throw","Put" };
-    magazines[]  = { "200Rnd_556x45_Box",4,"SmokeShell" };
-    linkedItems[]  = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch" };
-    backpack       = "AMF_Backpack_MINIMI_556_CE";
-    uniformClass   = "AMF_FELIN_BCE_uniform_CE";
-  };
+    /* Medic */
+    class Medic
+    {
+        displayName   = "Medic";
+        weapons[]     = { "AMF_HK416F_11" };
+        magazines[]   = { "AMF_556x45_30Rnd", 6, "SmokeShellGreen", 2 };
+        items[]       =
+        {
+            "Medikit",
+            "FirstAidKit","FirstAidKit","FirstAidKit","FirstAidKit"
+        };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "AMF_Sac_50L_CE";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
 
-  class MED_FRA
-  {
-    displayName = "CombatMedic";
-    weapons[]   = { "AMF_HK416F_11" ,"Throw","Put" };
-    magazines[] = { "AMF_556x45_30Rnd",8,"SmokeShellGreen",2 };
-    items[]     = { "ACE_fieldDressing",20,"ACE_epinephrine",8,"ACE_salineIV",2 };
-    linkedItems[] = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch" };
-    backpack      = "AMF_Sac_50L_CE";
-    uniformClass  = "AMF_FELIN_BCE_uniform_CE";
-  };
+    /* Light Autorifleman */
+    class LightAutorifleman
+    {
+        displayName   = "Light Autorifleman";
+        weapons[]     = { "AMF_MINIMI_556" };
+        magazines[]   = { "200Rnd_556x45_Box", 2, "SmokeShell", 1 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "AMF_Backpack_MINIMI_556_CE";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
+
+    /* Heavy Machinegunner */
+    class HeavyMachinegunner
+    {
+        displayName   = "Heavy Machinegunner";
+        weapons[]     = { "LMG_Mk200_F" };
+        magazines[]   = { "150Rnd_93x64_Mag", 2 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_Kitbag_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
+
+    /* Marksman */
+    class Marksman
+    {
+        displayName   = "Marksman";
+        weapons[]     = { "srifle_DMR_01_F" };
+        magazines[]   = { "10Rnd_762x54_Mag", 5, "SmokeShell", 1 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_AssaultPack_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
+
+    /* Light Anti‑Tank */
+    class LightAntiTank
+    {
+        displayName   = "Light Anti‑Tank";
+        weapons[]     = { "launch_RPG32_F" };
+        magazines[]   = { "RPG32_F", 2, "SmokeShell", 1 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_Kitbag_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
+
+    /* Heavy Anti‑Tank */
+    class HeavyAntiTank
+    {
+        displayName   = "Heavy Anti‑Tank";
+        weapons[]     = { "launch_B_Titan_short_F" };
+        magazines[]   = { "Titan_AA", 1, "SmokeShell", 1 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_Kitbag_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
+
+    /* Sniper */
+    class Sniper
+    {
+        displayName   = "Sniper";
+        weapons[]     = { "srifle_LRR_F" };
+        magazines[]   = { "5Rnd_127x108_Mag", 3, "SmokeShell", 1 };
+        items[]       = { "FirstAidKit" };
+        linkedItems[] =
+        {
+            "AMF_FELIN_Helmet_CE",
+            "AMF_FELIN_Vest_CE",
+            "ItemMap","ItemCompass","ItemWatch",
+            "TFAR_anprc152"
+        };
+        backpack      = "B_Kitbag_rgr";
+        uniformClass  = "AMF_FELIN_BCE_uniform_CE";
+    };
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// 2) RESPAWN MENU ORDER: inventory first, then position
+// ───────────────────────────────────────────────────────────────────────────
+respawnTemplates[] =
+{
+    "MenuInventory",
+    "MenuPosition"
+};
+
 
 
 
