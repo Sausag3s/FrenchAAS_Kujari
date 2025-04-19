@@ -27,7 +27,6 @@ class CfgRespawnInventory
   {
     displayName = "SquadLead";
     icon = "\A3\Ui_f\data\GUI\Cfg\Ranks\captain_gs.paa";
-    role = "Leader";
 
     weapons[]      = { "AMF_HK416F_SF_2", "AMF_Glock17", "Throw", "Put" };
     magazines[]    = { "AMF_556x45_30Rnd",8,  "17Rnd_9x19_Mag",2, "SmokeShell",2 };
@@ -41,7 +40,6 @@ class CfgRespawnInventory
   class RIF_FRA
   {
     displayName = "Rifleman";
-    role        = "Default";
     weapons[]   = { "AMF_FAMAS_F1", "Throw", "Put" };
     magazines[] = { "AMF_556x45_25Rnd",10, "SmokeShell" };
     linkedItems[] = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch" };
@@ -51,7 +49,6 @@ class CfgRespawnInventory
   class AR_FRA
   {
     displayName  = "AutoRifleman";
-    role         = "MachineGunner";
     weapons[]    = { "AMF_MINIMI_556","Throw","Put" };
     magazines[]  = { "200Rnd_556x45_Box",4,"SmokeShell" };
     linkedItems[]  = { "AMF_FELIN_Helmet_CE","ItemMap","ItemCompass","ItemWatch" };
@@ -62,7 +59,6 @@ class CfgRespawnInventory
   class MED_FRA
   {
     displayName = "CombatMedic";
-    role        = "Medic";
     weapons[]   = { "AMF_HK416F_11" ,"Throw","Put" };
     magazines[] = { "AMF_556x45_30Rnd",8,"SmokeShellGreen",2 };
     items[]     = { "ACE_fieldDressing",20,"ACE_epinephrine",8,"ACE_salineIV",2 };
