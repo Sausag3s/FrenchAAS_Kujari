@@ -1,0 +1,105 @@
+/* =================================================================
+   Sector Map UI  (v16 – fixed bar‑colour logic)
+
+   This script draws a flag icon and a capture‑progress bar for each
+   AAS sector on the map, then updates them every second.
+================================================================= */
+
+// Wait until the core AAS arrays exist (set up by your config)
+waitUntil { 
+    !isNil "AAS_CapProg" && !isNil "AAS_SectorNames" 
+};
+
+// Helper function: returns a valid marker class name, or falls back to "mil_flag"
+private _safe = {
+    params ["_c"];
+    if (isClass (configFile >> "CfgMarkers" >> _c)) exitWith { _c };
+    "mil_flag"
+};
+
+//
+// PRE‑PASS: create one flag icon + two bars per sector trigger
+//
+{
+    // _x is the sector key, e.g. "s1"
+    private _trg  = missionNamespace getVariable [_x, objNull];
+    if (isNull _trg) exitWith {};            // skip if the trigger isn’t placed
+
+    // Grab position and human‑readable name
+    private _pos   = getPos _trg;
+    private _disp  = AAS_SectorNames getOrDefault [_x, _x];
+
+    // Initial capture progress and owning side
+    private _prog  = AAS_CapProg       getOrDefault [_x, 0];   // −100…100
+    private _side  = _trg getVariable   ["owner", civilian];
+
+    // Decide which flag icon to use: white until fully held (±100)
+    private _icon = "white";
+    if (abs _prog == 100) then {
+        if (_side isEqualTo WEST)  then { _icon = "flag_france" };
+        if (_side isEqualTo EAST)  then { _icon = "lop_flag_isis" };
+    };
+    // Validate the icon name
+    private _type = [_icon] call _safe;
+
+    // Create the map marker for the flag icon
+    private _flag = createMarkerLocal [format ["m_%1_flag", _x], _pos];
+    _flag setMarkerShapeLocal  "ICON";
+    _flag setMarkerTypeLocal   _type;
+    _flag setMarkerSizeLocal   [0.7, 0.7];
+    _flag setMarkerTextLocal   _disp;         // show sector name beside icon
+
+    // Grey background for the progress bar, offset slightly below the flag
+    private _bgPos = [_pos select 0, (_pos select 1) + 30];
+    private _bg    = createMarkerLocal [format ["m_%1_bg", _x], _bgPos];
+    _bg setMarkerShapeLocal    "RECTANGLE";
+    _bg setMarkerSizeLocal     [20, 1];
+    _bg setMarkerColorLocal    "ColorGrey";
+    _bg setMarkerAlphaLocal    0.7;
+
+    // The fill portion of the bar (starts at 0.1m width, blue by default)
+    private _fill = createMarkerLocal [format ["m_%1_fill", _x], _bgPos];
+    _fill setMarkerShapeLocal  "RECTANGLE";
+    _fill setMarkerSizeLocal   [0.1, 1];
+    _fill setMarkerColorLocal  "ColorBlue";
+
+    // Store handles on the trigger for the update loop
+    _trg setVariable ["ui_flag", _flag];
+    _trg setVariable ["ui_fill", _fill];
+} forEach AAS_Sectors;
+
+//
+// UPDATE LOOP: every second, refresh icons & bars based on current state
+//
+while { true } do {
+    {
+        private _trg  = missionNamespace getVariable [_x, objNull];
+        if (isNull _trg) exitWith {};
+
+        // Retrieve the created flag icon and fill bar
+        private _flag = _trg getVariable ["ui_flag", ""];
+        private _fill = _trg getVariable ["ui_fill", ""];
+        if !(_flag isEqualType "") exitWith {};
+
+        // Read latest progress and owner
+        private _prog = AAS_CapProg getOrDefault [_x, 0];
+        private _side = _trg getVariable ["owner", civilian];
+
+        // ICON: switch to colored flag only when fully held
+        private _icon = "white";
+        if (abs _prog == 100) then {
+            if (_side isEqualTo WEST) then { _icon = "flag_france" };
+            if (_side isEqualTo EAST) then { _icon = "lop_flag_isis" };
+        };
+        _flag setMarkerTypeLocal ([_icon] call _safe);
+
+        // PROGRESS BAR: scale fill width proportionally (100 → 20 m)
+        private _width = (abs _prog) * 0.20;
+        _fill setMarkerSizeLocal  [_width max 0.1, 1];
+
+        // Color the bar blue if BLUFOR leads, red if OPFOR leads
+        _fill setMarkerColorLocal ( if (_prog >= 0) then {"ColorBlue"} else {"ColorRed"} );
+    } forEach AAS_Sectors;
+
+    uiSleep 1;  // wait 1 second before next update
+};
